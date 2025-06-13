@@ -42,7 +42,7 @@
 
     form {
       background: rgba(255, 255, 255, 0.2);
-      padding: 1rem;
+      padding: 0.8rem 1rem;
       border-radius: 12px;
       border: 2px solid #ff66b2;
       box-shadow: 0 0 15px rgba(255, 0, 128, 0.4);
@@ -50,15 +50,15 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 0.75rem;
       box-sizing: border-box;
     }
 
     input[type="password"],
     input[type="submit"] {
       width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.95rem;
       border: 2px solid #ff99cc;
       border-radius: 8px;
       background: #fff0f5;
@@ -90,7 +90,7 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 0.75rem;
       width: 100%;
     }
 
@@ -112,8 +112,8 @@
     }
 
     .clickme-text {
-      margin-top: 10px;
-      font-size: 10px;
+      margin-top: 6px;
+      font-size: 9px;
       font-family: var(--game-font);
       color: #c71585;
       animation: pulse 1.5s infinite;
@@ -158,6 +158,7 @@
     .modal-content {
       background: #fff0f7;
       padding: 1.5rem;
+      padding-top: 3.5rem; /* space for close button */
       border: 2px solid #ff99cc;
       border-radius: 15px;
       max-width: 100%;
@@ -174,7 +175,7 @@
       background-color: #ff66b2;
       color: white;
       border: none;
-      padding: 5px 10px;
+      padding: 8px 12px;
       border-radius: 8px;
       cursor: pointer;
       font-family: var(--game-font);
@@ -190,10 +191,13 @@
       background-color: #ff4d94;
     }
 
+    /* Message tabs horizontal side-by-side */
     .message-tabs {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+      gap: 0.25rem;
+      justify-content: center;
+      flex-wrap: nowrap;
+      margin-bottom: 10px;
     }
 
     .message-tabs button {
@@ -204,8 +208,10 @@
       cursor: pointer;
       font-family: var(--game-font);
       font-size: 0.8rem;
-      min-width: 70px;
-      transition: background-color 0.3s;
+      min-width: 90px;
+      white-space: nowrap;
+      transition: background-color 0.3s, color 0.3s;
+      color: #800040;
     }
 
     .message-tabs button:hover {
@@ -213,53 +219,83 @@
     }
 
     .message-content {
-      margin-top: 15px;
       font-size: 0.85rem;
       font-family: var(--note-font);
       white-space: pre-line;
-      line-height: 1.5;
+      line-height: 1.4;
       color: #800040;
-      min-height: 120px;
+      min-height: auto;
+      padding: 0 0.5rem;
+      margin-bottom: 0;
+      max-height: 150px;
+      overflow-y: auto;
+      user-select: text;
     }
 
+    /* Spotify embed and meaning styling */
     .spotify-embed {
-      margin: 15px 0;
-    }
-
-    .music-title {
-      font-size: 0.8rem;
-      text-align: center;
-      margin-bottom: 10px;
-      color: #d0006f;
+      margin: 8px 0;
+      border: 1.5px solid #ff66b2;
+      border-radius: 10px;
+      padding: 6px 8px;
+      box-sizing: border-box;
+      background: #fff0f5;
     }
 
     .music-meaning {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-family: var(--note-font);
       color: #b0005a;
       text-align: center;
-      margin-top: 5px;
-      margin-bottom: 15px;
+      margin-top: 4px;
+      margin-bottom: 12px;
+      line-height: 1.3;
+      max-width: 100%;
     }
 
     iframe {
       width: 100% !important;
-      max-width: 100%;
-      height: 140px !important;
-      border-radius: 12px;
+      height: 280px !important;
+      border-radius: 10px;
+      border: none;
       display: block;
-      margin: 0 auto;
+      margin: 0;
     }
 
     /* 🌟 MOBILE STYLING */
     @media (max-width: 600px) {
       html,
       body {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
       }
 
       .clickme-text {
-        font-size: 10px;
+        font-size: 8px;
+      }
+
+      .spotify-embed {
+        margin: 6px 0;
+        padding: 4px 6px;
+      }
+
+      iframe {
+        height: 220px !important;
+      }
+
+      .music-meaning {
+        font-size: 0.75rem;
+        margin-bottom: 10px;
+      }
+
+      .message-content {
+        max-height: 130px;
+        font-size: 0.8rem;
+      }
+
+      .close-btn {
+        padding: 10px 14px;
+        top: 12px;
+        right: 12px;
       }
     }
   </style>
@@ -284,9 +320,9 @@
     <div class="modal-content">
       <button class="close-btn" onclick="closeModal('messageModal')" aria-label="Close message modal">Close</button>
       <div class="message-tabs" role="tablist">
-        <button role="tab" onclick="showMessage(1)">Message 1</button>
-        <button role="tab" onclick="showMessage(2)">Message 2</button>
-        <button role="tab" onclick="showMessage(3)">Message 3</button>
+        <button role="tab">Message 1</button>
+        <button role="tab">Message 2</button>
+        <button role="tab">Message 3</button>
       </div>
       <div class="message-content" id="messageContent"></div>
     </div>
@@ -359,6 +395,17 @@
       document.getElementById(id).classList.remove("show");
     }
 
+    // Initially no message shown
+    document.getElementById("messageContent").innerText = "";
+
+    // Set up message tabs event listeners
+    const messageButtons = document.querySelectorAll(".message-tabs button");
+    messageButtons.forEach((btn, idx) => {
+      btn.addEventListener("click", () => {
+        showMessage(idx + 1);
+      });
+    });
+
     function showMessage(index) {
       const messages = {
         1: `I love you so much and happy birthday, my baby. I know this is just a simple thing I made for you, pero I really hope you appreciate it. I worked on this for hours and that probably sums up how much you mean to me and how much I actually love you. You’ve always made me feel special in the most effortless ways, so I wanted to give a little of that back to you today. I know this isn’t a grand gift or anything fancy, but it’s something I poured my heart into, just like how I give my heart to you every day. I hope this makes you smile. You deserve to smile every day, but especially today. Happy birthday again, my aya.`,
@@ -366,7 +413,19 @@
         3: `I love how energetic you are and how you’re always just being yourself. You brighten everything around you and I hope you never lose that light, aya. You have this natural way of making things feel fun, exciting, and full of life--just by being you.`,
       };
       document.getElementById("messageContent").innerText = messages[index];
+
+      // Update active tab style
+      messageButtons.forEach((btn, i) => {
+        if (i + 1 === index) {
+          btn.style.backgroundColor = "#ff66b2";
+          btn.style.color = "white";
+        } else {
+          btn.style.backgroundColor = "#ffe4ec";
+          btn.style.color = "#800040";
+        }
+      });
     }
   </script>
 </body>
 </html>
+
