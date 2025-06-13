@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Special Message</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Gloria+Hallelujah&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --game-font: 'Press Start 2P', cursive;
+      --note-font: 'Gloria Hallelujah', cursive;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffe0f0;
+      font-family: var(--game-font);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #800040;
+      text-align: center;
+    }
+
+    h2, .clue {
+      margin-bottom: 10px;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 20px 30px;
+      border-radius: 12px;
+      border: 2px solid #ff66b2;
+      box-shadow: 0 0 15px rgba(255, 0, 128, 0.4);
+      margin-bottom: 20px;
+    }
+
+    input[type="password"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #ff99cc;
+      border-radius: 8px;
+      background: #fff0f5;
+      font-family: var(--game-font);
+      margin-right: 10px;
+    }
+
+    input[type="submit"] {
+      padding: 10px 15px;
+      font-family: var(--game-font);
+      background-color: #ff66b2;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #ff66b2;
+    }
+
+    .next-section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .icon-button {
+      background-color: #fff0f5;
+      border: 2px solid #ff66aa;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-family: var(--game-font);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .icon-button:hover {
+      background-color: #ffccde;
+    }
+
+    .clickme-text {
+      margin-top: 10px;
+      font-size: 10px;
+      font-family: var(--game-font);
+      color: #c71585;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 192, 203, 0.6);
+      backdrop-filter: blur(5px);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #fff0f7;
+      padding: 40px 20px;
+      border: 2px solid #ff99cc;
+      border-radius: 15px;
+      max-width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      text-align: left;
+      font-family: var(--game-font);
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+      position: relative;
+    }
+
+    .close-btn {
+      background-color: #ff66b2;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--game-font);
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1;
+    }
+
+    .message-tabs button {
+      margin: 5px;
+      padding: 8px 12px;
+      background: #ffe4ec;
+      border: 1px solid #ff66b2;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--game-font);
+      font-size: 8px;
+    }
+
+    .message-content {
+      margin-top: 15px;
+      font-size: 11px;
+      font-family: var(--note-font);
+      white-space: pre-line;
+      line-height: 1.6;
+      color: #800040;
+    }
+
+    .spotify-embed {
+      margin: 15px 0;
+    }
+
+    .music-title {
+      font-size: 10px;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #d0006f;
+    }
+
+    .music-meaning {
+      font-size: 10px;
+      font-family: var(--note-font);
+      color: #b0005a;
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    /* 🌟 MOBILE STYLING */
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+        font-size: 0.9rem;
+      }
+
+      form {
+        width: 100%;
+        padding: 1rem;
+      }
+
+      input[type="password"],
+      input[type="submit"] {
+        width: 100%;
+        font-size: 16px;
+        margin-bottom: 1rem;
+      }
+
+      .icon-button {
+        width: 100%;
+        font-size: 0.75rem;
+      }
+
+      .modal-content {
+        padding: 1.5rem 1rem;
+        max-height: 80vh;
+      }
+
+      .message-content {
+        font-size: 0.75rem;
+        line-height: 1.5;
+      }
+
+      .message-tabs button {
+        font-size: 0.6rem;
+        padding: 0.4rem 0.6rem;
+      }
+
+      .music-title,
+      .music-meaning {
+        font-size: 0.7rem;
+      }
+
+      iframe {
+        height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="title">Enter Password</h2>
+  <p class="clue" id="clue">📅 Clue: Date I said yes to you.</p>
+
+  <form id="passwordForm">
+    <input type="password" id="secret" name="secret" required>
+    <input type="submit" value="Submit">
+  </form>
+
+  <div class="next-section" id="nextSection">
+    <button class="icon-button" onclick="openModal('messageModal')">💬 Message</button>
+    <button class="icon-button" onclick="openModal('musicModal')">🎵 Music</button>
+    <p class="clickme-text">Click me 💖</p>
+  </div>
+
+  <!-- Message Modal -->
+  <div class="modal" id="messageModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('messageModal')">Close</button>
+      <div class="message-tabs">
+        <button onclick="showMessage(1)">Message 1</button>
+        <button onclick="showMessage(2)">Message 2</button>
+        <button onclick="showMessage(3)">Message 3</button>
+      </div>
+      <div class="message-content" id="messageContent"></div>
+    </div>
+  </div>
+
+  <!-- Music Modal -->
+  <div class="modal" id="musicModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('musicModal')">Close</button>
+      <p class="music-title">🎵 Songs I dedicate to you 🎵</p>
+      <div class="spotify-embed">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3PzNwVdR8BNzKCBahvAYOm?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <p class="music-meaning">Because you’re my favorite person and this song reminds me of how much you mean to me.</p>
+      </div>
+      <div class="spotify-embed">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/52VIdyKqp1pJRSyUQaxKUA?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <p class="music-meaning">This one captures the way you brighten up my life every single day.</p>
+      </div>
+      <div class="spotify-embed">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4LGJ2pLDvTRnul3EcZoYkX?utm_source=generator" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <p class="music-meaning">You make ordinary moments feel magical — this song gives that same feeling.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("passwordForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const input = document.getElementById("secret").value;
+      if (input === "111324") {
+        document.getElementById("passwordForm").style.display = "none";
+        document.getElementById("title").style.display = "none";
+        document.getElementById("clue").style.display = "none";
+        document.getElementById("nextSection").style.display = "flex";
+      } else {
+        alert("Wrong password, try again!");
+      }
+    });
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("show");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("show");
+    }
+
+    function showMessage(index) {
+      const messages = {
+        1: "I love you so much and happy birthday, my baby. I know this is just a simple thing I made for you, pero I really hope you appreciate it. I worked on this for hours and that probably sums up how much you mean to me and how much I actually love you. You’ve always made me feel special in the most effortless ways, so I wanted to give a little of that back to you today. I know this isn’t a grand gift or anything fancy, but it’s something I poured my heart into, just like how I give my heart to you every day. I hope this makes you smile. You deserve to smile every day, but especially today. Happy birthday again, my aya.",
+        2: "I hope you know that you’ve taught me a lot without even realizing it. You taught me how to be more open with my feelings and how to just be myself. Loving you will always be my favorite thing to do. I love loving you, and I’ll always show that through my words and actions.",
+        3: "I love how energetic you are and how you’re always just being yourself. You brighten everything around you and I hope you never lose that light, aya. You have this natural way of making things feel fun, exciting, and full of life--just by being you."
+      };
+      document.getElementById("messageContent").innerText = messages[index];
+    }
+  </script>
+
+</body>
+</html>
